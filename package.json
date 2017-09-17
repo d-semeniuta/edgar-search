@@ -1,0 +1,22 @@
+{
+  "name": "edgar-search",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d-semeniuta/edgar-search.git"
+  },
+  "author": "Daniel Semeniuta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/d-semeniuta/edgar-search/issues"
+  },
+  "homepage": "https://github.com/d-semeniuta/edgar-search#readme",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
