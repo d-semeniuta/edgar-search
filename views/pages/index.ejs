@@ -1,0 +1,37 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <h1>Search for Public Filings</h1>
+            <p>Find all publicly available SEC filings associated
+				with a company by searching for their trading symbol.</p>
+        
+		
+		<form class="form-inline">
+			<label class="sr-only" for="ticker_symbol">Ticker Symbol</label>
+			<input type="text" class="form-control" id="ticker_symbol" placeholder="Ticker Symbol">
+
+			<!-- <label class="sr-only" for="inlineFormInputGroupUsername2">Username</label> -->
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+		</div>
+    </main>
+
+    <footer>
+
+    </footer>
+
+</body>
+</html>
