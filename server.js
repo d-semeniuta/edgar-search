@@ -21,5 +21,23 @@ app.get('/about', function(req, res) {
     res.render('pages/about');
 });
 
+app.get('/search', function(req, res) {
+    res.render('pages/index');
+	buildRequest(req.query.ticker_symbol);
+});
+
+function buildRequest(ticker){
+	var base_url = "https://www.sec.gov/cgi-bin/browse-edgar?"
+	console.log('About to build request for: ' + ticker + '!');
+	var query_params = {
+		action: "getcompany",
+		CIK: ticker,
+		owner: "exclude",
+		start: 0,
+		count: 40,
+		output: "atom"
+	}
+}
+
 app.listen(8000);
 console.log('Listening on port 8000');
