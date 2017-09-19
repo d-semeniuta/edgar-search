@@ -12,17 +12,7 @@
     </header>
 
     <main>
-        <div class="jumbotron">
-            <h1>Search for Public Filings</h1>
-            <p>Find all publicly available SEC filings associated
-				with a company by searching for their trading symbol.</p>
-        
-		
-		<form class="form-inline" action="/search" method="get">
-			<input type="text" class="form-control" name="ticker_symbol" id="ticker_symbol" placeholder="Ticker Symbol">
-			<button type="submit" class="btn btn-primary">Search</button>
-		</form>
-		</div>
+		<% include ../partials/searchForm %>
     </main>
 
     <footer>

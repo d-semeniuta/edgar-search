@@ -1,0 +1,21 @@
+<!-- /partials/searchForm.ejs -->
+
+<div class="jumbotron">
+	<h1>Search for Public Filings</h1>
+	<p>Find all publicly available SEC filings associated
+		with a company by searching for their trading symbol.</p>
+
+
+<form class="form-inline" action="/search" method="get">
+	<label>Ticker Symbol:</label>
+	<input type="text" class="form-control" name="ticker_symbol" id="ticker_symbol" placeholder="Ticker Symbol">
+	<label>Number of Entries:</label>
+	<select class = "form-control form-control-sm" name="num_results">
+		<option>20</option>
+		<option>40</option>
+		<option>60</option>
+		<option>100</option>
+	</select>
+	<button type="submit" class="btn btn-primary">Search</button>
+</form>
+</div>
