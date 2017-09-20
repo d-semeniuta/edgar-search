@@ -17,6 +17,7 @@
 		
 		<div class="container">
 			<% if(loadResults){ %>
+			<p>Displaying the <%= (query.page - 1)*query.num_results + 1 %> through <%= (query.page)*query.num_results %> most recent results.</p>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -38,7 +39,7 @@
 					</tbody>
 				</table>
 			<% } else{ %>  
-			   <h1>No results found for ticker symbol "<%= ticker %>" </h1>
+			   <h1>No results found for ticker symbol "<%= query.ticker_symbol %>" </h1>
 			<% } %>
 
 			

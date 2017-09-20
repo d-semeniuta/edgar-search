@@ -16,7 +16,9 @@ app.set('view engine', 'ejs');
 
 // index page 
 app.get('/', function(req, res) {
-    res.render('pages/index');
+    res.render('pages/index', {
+		query: false
+	});
 });
 
 // about page 
@@ -37,13 +39,14 @@ app.get('/search', function(req, response) {
 		});
 		res.on("end", () => {
 			
-			//body = JSON.parse(body);
+			//parses the xml object returned by the RSS feed of the edgar search
+			//populates a list of objects which becomes the search results
 			parseString(body, function (err, res) {
 				if(!res){
 					console.log('No results found');
 					response.render('pages/search',{
 						loadResults: false,
-						ticker: req.query.ticker_symbol
+						query: req.query
 					});
 				} else {
 					var entries = [];
@@ -60,7 +63,8 @@ app.get('/search', function(req, response) {
 					
 					response.render('pages/search', {
 						loadResults: true,
-						filings: entries
+						filings: entries,
+						query: req.query	
 					});
 					//console.log(res);
 				}
@@ -75,7 +79,7 @@ function buildRequestPath(query){
 		action: "getcompany",
 		CIK: query.ticker_symbol,
 		owner: "exclude",
-		start: 0,
+		start: (query.page - 1)*query.num_results,
 		count: query.num_results,
 		output: "atom"
 	};
