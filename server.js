@@ -30,7 +30,7 @@ app.get('/about', function(req, res) {
 app.get('/search', function(req, response) {
     
 	var requestPath = buildRequestPath(req.query);
-	//var ticker = req.query.ticker_symbol;
+	//sends request to SEC website for the RSS feed of results
 	https.get(requestPath, res => {
 		res.setEncoding("utf8");
 		let body = "";
@@ -64,15 +64,16 @@ app.get('/search', function(req, response) {
 					response.render('pages/search', {
 						loadResults: true,
 						filings: entries,
+						numResults: entries.length,
 						query: req.query	
 					});
-					//console.log(res);
 				}
 			});
 		});
 	});
 });
 
+//puts together the request url to the SEC server
 function buildRequestPath(query){
 	var baseUrl = "https://www.sec.gov/cgi-bin/browse-edgar?";
 	var queryParams = {
@@ -85,11 +86,10 @@ function buildRequestPath(query){
 	};
 	var queryString = toQueryString(queryParams);
 	var requestUrl = baseUrl + queryString;
-	console.log('Sending request to ' + requestUrl);
 	return requestUrl;
 }
 
-//eliminates need for jQuery
+//no need for jQuery
 function toQueryString(obj){
 	var parts = [];
 	for(var i in obj){

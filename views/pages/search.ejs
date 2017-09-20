@@ -17,7 +17,31 @@
 		
 		<div class="container">
 			<% if(loadResults){ %>
-			<p>Displaying the <%= (query.page - 1)*query.num_results + 1 %> through <%= (query.page)*query.num_results %> most recent results.</p>
+			<p>Displaying the <%= (query.page - 1)*query.num_results + 1 %>
+				through <%= (query.page - 1)*query.num_results + numResults %>
+				most recent filings.</p>
+			<div class="row">
+				<div class="col-md-11">
+					<% if( parseInt(query.page) != 1 ){ %>
+					<form class="form-inline" action="/search" method="get">
+						<input type="hidden"name="ticker_symbol" value = "<%= query.ticker_symbol %>" >
+						<input type="hidden" name="num_results" value = "<%= query.num_results%>" >
+						<input type="hidden" name="page" value=" <%= parseInt(query.page) - 1 %>">
+						<button type="submit" class="btn btn-primary">Previous <%= query.num_results %></button>
+					</form>
+					<% } %>
+				</div>
+				<div class="col-md-1">
+					<% if(numResults == query.num_results ){ %>
+					<form class="form-inline" action="/search" method="get">
+						<input type="hidden"name="ticker_symbol" value = "<%= query.ticker_symbol %>" >
+						<input type="hidden" name="num_results" value = "<%= query.num_results%>" >
+						<input type="hidden" name="page" value=" <%= parseInt(query.page) + 1 %>">
+						<button type="submit" class="btn btn-primary">Next <%= query.num_results %></button>
+					</form>
+					<% } %>
+				</div>
+			</div>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -41,8 +65,6 @@
 			<% } else{ %>  
 			   <h1>No results found for ticker symbol "<%= query.ticker_symbol %>" </h1>
 			<% } %>
-
-			
 		</div>
 		
     </main>
