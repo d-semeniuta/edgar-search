@@ -24,9 +24,9 @@ app.get('/about', function(req, res) {
     res.render('pages/about');
 });
 
-//search
-app.get('/search', function(req, res) {
-    res.render('pages/search');
+//search results display
+app.get('/search', function(req, response) {
+    
 	var requestPath = buildRequestPath(req.query);
 	//var ticker = req.query.ticker_symbol;
 	https.get(requestPath, res => {
@@ -36,21 +36,40 @@ app.get('/search', function(req, res) {
 			body += data;
 		});
 		res.on("end", () => {
+			
 			//body = JSON.parse(body);
 			parseString(body, function (err, res) {
-				
-				for (ent in res.feed.entry){
-					console.log(res.feed.entry[ent]);
+				if(!res){
+					console.log('No results found');
+					response.render('pages/search',{
+						loadResults: false,
+						ticker: req.query.ticker_symbol
+					});
+				} else {
+					var entries = [];
+					var resEntries = res.feed.entry;
+					for (ent in resEntries){
+						var entryObj = new Object();
+						var content = resEntries[ent].content[0];
+						entryObj.filingType = content['filing-type'];
+						entryObj.description = content['form-name'];
+						entryObj.date = content['filing-date'];
+						entryObj.link = content['filing-href'];
+						entries.push(entryObj);
+					}
+					
+					response.render('pages/search', {
+						loadResults: true,
+						filings: entries
+					});
+					//console.log(res);
 				}
-				
-				//console.log(res);
-			})
+			});
 		});
 	});
 });
 
 function buildRequestPath(query){
-	console.log('About to build request for: ' + query + '!');
 	var baseUrl = "https://www.sec.gov/cgi-bin/browse-edgar?";
 	var queryParams = {
 		action: "getcompany",
