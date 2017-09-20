@@ -34,12 +34,12 @@ app.get('/search', function(req, response) {
 	var requestPath = buildRequestPath(req.query);
 	//sends request to SEC website for the RSS feed of results
 	https.get(requestPath, res => {
-		res.setEncoding("utf8");
-		let body = "";
-		res.on("data", data => {
+		res.setEncoding('utf8');
+		let body = '';
+		res.on('data', data => {
 			body += data;
 		});
-		res.on("end", () => {
+		res.on('end', () => {
 			
 			//parses the xml object returned by the RSS feed of the edgar search
 			//populates a list of objects which becomes the search results
@@ -83,7 +83,7 @@ app.post('/getHTML', function(req, response) {
 	txtUrl = txtUrl.join('-') + '.txt';
 	https.get(txtUrl, res => {
 		res.setEncoding('utf8');
-		let body = "";
+		let body = '';
 		res.on('data', data => {
 			body += data;
 		});
@@ -91,7 +91,7 @@ app.post('/getHTML', function(req, response) {
 			var file = body.match(/<FILENAME>.*/g);
 			//older filings don't have HTML files, redirect to the index
 			if(file == null){
-				response.writeHead(301, {
+				response.writeHead(307, {
 					Location: indexUrl
 				});
 				response.end();
@@ -101,7 +101,7 @@ app.post('/getHTML', function(req, response) {
 				htmlUrl.pop()
 				htmlUrl.push(file);
 				htmlUrl = htmlUrl.join('/');
-				response.writeHead(301, {
+				response.writeHead(307, {
 					Location: htmlUrl
 				});
 				response.end();
@@ -113,14 +113,14 @@ app.post('/getHTML', function(req, response) {
 
 //puts together the request url to the SEC server
 function buildRequestPath(query){
-	var baseUrl = "https://www.sec.gov/cgi-bin/browse-edgar?";
+	var baseUrl = 'https://www.sec.gov/cgi-bin/browse-edgar?';
 	var queryParams = {
-		action: "getcompany",
+		action: 'getcompany',
 		CIK: query.ticker_symbol,
-		owner: "exclude",
+		owner: 'exclude',
 		start: (query.page - 1)*query.num_results,
 		count: query.num_results,
-		output: "atom"
+		output: 'atom'
 	};
 	var queryString = toQueryString(queryParams);
 	var requestUrl = baseUrl + queryString;
@@ -132,10 +132,10 @@ function toQueryString(obj){
 	var parts = [];
 	for(var i in obj){
 		if (obj.hasOwnProperty(i)) {
-			parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+			parts.push(encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]));
 		}
 	}
-	return parts.join("&");
+	return parts.join('&');
 }
 
 
