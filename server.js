@@ -8,6 +8,8 @@ var app = express();
 
 const https = require('https');
 var parseString = require('xml2js').parseString;
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // set ejs
 app.set('view engine', 'ejs');
@@ -43,7 +45,6 @@ app.get('/search', function(req, response) {
 			//populates a list of objects which becomes the search results
 			parseString(body, function (err, res) {
 				if(!res){
-					console.log('No results found');
 					response.render('pages/search',{
 						loadResults: false,
 						query: req.query
@@ -67,11 +68,48 @@ app.get('/search', function(req, response) {
 						numResults: entries.length,
 						query: req.query	
 					});
+					response.end();
 				}
 			});
 		});
 	});
 });
+
+app.post('/getHTML', function(req, response) {
+	var indexUrl = req.body.filing_index;
+	indexUrl = indexUrl.replace('http', 'https')
+	var txtUrl = indexUrl.split('-');
+	txtUrl.pop();
+	txtUrl = txtUrl.join('-') + '.txt';
+	https.get(txtUrl, res => {
+		res.setEncoding('utf8');
+		let body = "";
+		res.on('data', data => {
+			body += data;
+		});
+		res.on('end', () => {
+			var file = body.match(/<FILENAME>.*/g);
+			//older filings don't have HTML files, redirect to the index
+			if(file == null){
+				response.writeHead(301, {
+					Location: indexUrl
+				});
+				response.end();
+			} else {
+				file = file[0].split('>')[1];
+				var htmlUrl = txtUrl.split('/');
+				htmlUrl.pop()
+				htmlUrl.push(file);
+				htmlUrl = htmlUrl.join('/');
+				response.writeHead(301, {
+					Location: htmlUrl
+				});
+				response.end();
+			}
+		});
+	});
+});
+
 
 //puts together the request url to the SEC server
 function buildRequestPath(query){

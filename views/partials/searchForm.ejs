@@ -20,7 +20,7 @@
 		for ( var i = 0; i < opts.length; i++ )
 		{
 			var selected = ( query.num_results == opts[i] ) ? "selected" : "";
-			%><option value="<%=opts[i] %>" <%=selected %>><%=opts[i] %></option><%
+			%><option value="<%= opts[i] %>" <%= selected %>><%= opts[i] %></option><%
 		}
 		%>
 	</select>

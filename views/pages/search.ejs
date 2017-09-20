@@ -56,8 +56,11 @@
 							<tr>
 								<th> <%= entry.filingType %> </th>
 								<th> <%= entry.description %></th>
-								<th> <%= entry.date%></th>
-								<th> <a href="<%= entry.link %>" class="badge"> Link </a> </th>
+								<th> <%= entry.date %></th>
+								<th> <form id="form-html" target="_blank" method="post" action="/getHTML">
+									<input type="hidden" name="filing_index" value="<%=entry.link%>"></input>
+									<button type="submit" class="badge">Document Link</button>
+								</form></th>
 							</tr>
 						<% }); %>
 					</tbody>
@@ -73,5 +76,4 @@
 
     </footer>
 
-</body>
-</html>
+</body></html>
